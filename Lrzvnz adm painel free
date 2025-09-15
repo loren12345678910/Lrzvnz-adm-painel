@@ -1,0 +1,184 @@
+-- Serviços
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local LocalPlayer = Players.LocalPlayer
+
+-- Key System
+local Key = "lrzvnz universal scripts"
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
+ScreenGui.Name = "LRZ_Free_Hub"
+
+-- Frame principal
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 450, 0, 350)
+MainFrame.Position = UDim2.new(0.5, -225, 0.5, -175)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+-- Título
+local Title = Instance.new("TextLabel", MainFrame)
+Title.Size = UDim2.new(1, -20, 0, 40)
+Title.Position = UDim2.new(0,10,0,10)
+Title.BackgroundTransparency = 1
+Title.Text = "⚡LRZVNZ Free Hub⚡"
+Title.Font = Enum.Font.GothamBold
+Title.TextScaled = true
+Title.TextColor3 = Color3.fromRGB(200,0,0)
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Input da Key
+local KeyInput = Instance.new("TextBox", MainFrame)
+KeyInput.Size = UDim2.new(0.6, 0, 0, 30)
+KeyInput.Position = UDim2.new(0,10,0,60)
+KeyInput.PlaceholderText = "Insira a Key"
+KeyInput.ClearTextOnFocus = false
+KeyInput.TextColor3 = Color3.fromRGB(255,255,255)
+KeyInput.BackgroundColor3 = Color3.fromRGB(50,50,50)
+
+-- Botão Checar Key
+local CheckButton = Instance.new("TextButton", MainFrame)
+CheckButton.Size = UDim2.new(0.18,0,0,30)
+CheckButton.Position = UDim2.new(0.62,0,0,60)
+CheckButton.Text = "Checar Key"
+CheckButton.BackgroundColor3 = Color3.fromRGB(150,0,0)
+CheckButton.TextColor3 = Color3.fromRGB(255,255,255)
+
+-- Botão Obter Key
+local GetButton = Instance.new("TextButton", MainFrame)
+GetButton.Size = UDim2.new(0.18,0,0,30)
+GetButton.Position = UDim2.new(0.82,0,0,60)
+GetButton.Text = "Obter Key"
+GetButton.BackgroundColor3 = Color3.fromRGB(0,150,0)
+GetButton.TextColor3 = Color3.fromRGB(255,255,255)
+
+-- Mensagem central
+local MsgLabel = Instance.new("TextLabel", ScreenGui)
+MsgLabel.Size = UDim2.new(0,250,0,50)
+MsgLabel.Position = UDim2.new(0.5,-125,0.5,-25)
+MsgLabel.BackgroundTransparency = 1
+MsgLabel.TextScaled = true
+MsgLabel.Font = Enum.Font.GothamBold
+MsgLabel.Text = ""
+MsgLabel.Visible = false
+
+-- Função para mostrar mensagem
+local function ShowMessage(text,color)
+    MsgLabel.Text = text
+    MsgLabel.TextColor3 = color
+    MsgLabel.Visible = true
+    task.wait(0.8)
+    MsgLabel.Visible = false
+end
+
+-- Evento do botão Obter Key
+GetButton.MouseButton1Click:Connect(function()
+    ShowMessage("Key: "..Key, Color3.fromRGB(0,255,0))
+end)
+
+-- Evento do botão Checar Key
+CheckButton.MouseButton1Click:Connect(function()
+    if KeyInput.Text == Key then
+        ShowMessage("Key válida", Color3.fromRGB(0,255,0))
+    else
+        ShowMessage("Key inválida", Color3.fromRGB(255,0,0))
+    end
+end)
+
+-- Abas (já integradas com os comandos do Rael Hub)
+local Tabs = {}
+local TabNames = {"AllCommands","SoloCommands","Tools","Avatar","House","Clothes"}
+for i,Name in ipairs(TabNames) do
+    local btn = Instance.new("TextButton", MainFrame)
+    btn.Size = UDim2.new(0,80,0,30)
+    btn.Position = UDim2.new(0,(i-1)*75,0,100)
+    btn.Text = Name
+    btn.BackgroundColor3 = Color3.fromRGB(150,0,0)
+    btn.TextColor3 = Color3.fromRGB(255,255,255)
+    Tabs[Name] = Instance.new("Frame",MainFrame)
+    Tabs[Name].Size = UDim2.new(1,0,1,0)
+    Tabs[Name].BackgroundColor3 = Color3.fromRGB(200,0,0)
+    Tabs[Name].Visible = false
+
+    btn.MouseButton1Click:Connect(function()
+        for _,v in pairs(Tabs) do v.Visible = false end
+        Tabs[Name].Visible = true
+    end)
+end
+Tabs["AllCommands"].Visible = true
+
+-- TP Click e Walker (reais)
+local TPActive = false
+local TPButton = Instance.new("TextButton", Tabs["Tools"])
+TPButton.Size = UDim2.new(0,120,0,40)
+TPButton.Position = UDim2.new(0,10,0,10)
+TPButton.Text = "TP Click: OFF"
+TPButton.BackgroundColor3 = Color3.fromRGB(100,0,0)
+TPButton.TextColor3 = Color3.fromRGB(255,255,255)
+
+TPButton.MouseButton1Click:Connect(function()
+    TPActive = not TPActive
+    if TPActive then
+        TPButton.Text = "TP Click: ON"
+        TPButton.BackgroundColor3 = Color3.fromRGB(0,100,0)
+    else
+        TPButton.Text = "TP Click: OFF"
+        TPButton.BackgroundColor3 = Color3.fromRGB(100,0,0)
+    end
+end)
+
+local WalkerActive = false
+local WalkerButton = Instance.new("TextButton", Tabs["Tools"])
+WalkerButton.Size = UDim2.new(0,120,0,40)
+WalkerButton.Position = UDim2.new(0,140,0,10)
+WalkerButton.Text = "Walker: OFF"
+WalkerButton.BackgroundColor3 = Color3.fromRGB(100,0,0)
+WalkerButton.TextColor3 = Color3.fromRGB(255,255,255)
+
+WalkerButton.MouseButton1Click:Connect(function()
+    WalkerActive = not WalkerActive
+    if WalkerActive then
+        WalkerButton.Text = "Walker: ON"
+        WalkerButton.BackgroundColor3 = Color3.fromRGB(0,100,0)
+    else
+        WalkerButton.Text = "Walker: OFF"
+        WalkerButton.BackgroundColor3 = Color3.fromRGB(100,0,0)
+    end
+end)
+
+-- Função TP Click
+local mouse = LocalPlayer:GetMouse()
+mouse.Button1Down:Connect(function()
+    if TPActive and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local targetPos = mouse.Hit.Position
+        LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPos + Vector3.new(0,3,0))
+    end
+end)
+
+-- Função Walker
+task.spawn(function()
+    while true do
+        task.wait(0.1)
+        if WalkerActive and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(mouse.Hit.Position + Vector3.new(0,3,0))
+        end
+    end
+end)
+
+-- Comandos visuais do nosso Hub
+local function JailVisual(targetPlayer)
+    ShowMessage("Jail ativado em "..targetPlayer.Name, Color3.fromRGB(255,255,0))
+end
+
+local function GodVisual(targetPlayer)
+    ShowMessage("God ativado em "..targetPlayer.Name, Color3.fromRGB(0,255,255))
+end
+
+local function FreezeVisual(targetPlayer)
+    ShowMessage("Freeze ativado em "..targetPlayer.Name, Color3.fromRGB(255,0,255))
+end

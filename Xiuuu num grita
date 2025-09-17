@@ -1,5 +1,3 @@
-local redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/Library-ui/refs/heads/main/Redzhubui"))()
-local Window = redzlib:MakeWindow({
   Title = "⚡LRZVNZ ADM PAINEL⚡🏡🪐",
   SubTitle = "by lorenzo006130",
   SaveFolder = "testando | redz lib v5.lua"
